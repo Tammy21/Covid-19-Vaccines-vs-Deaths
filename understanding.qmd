@@ -1,0 +1,27 @@
+---
+title: Understanding The Datasets
+toc: true
+number-sections: true
+format:
+  html:
+    code-fold: true
+---
+
+# Data Description
+
+OWID: OWID could be the right data source for this analysis. It auto extracts data from JHU and WHO which are in turn getting daily data from respective country health authorities and they are reliable. It has all the required variables for analysis starting from deaths rate and its attributes, population, vaccination rates, and total death per million. Link: https://github.com/owid/covid-19-data/raw/master/public/data/owid-covid-data.csv
+
+## Key Metrics 
+
+1. Cases: How many new cases are being confirmed each day? How many cases have been confirmed since the pandemic started? How is the number of cases changing?
+2. Deaths: How many deaths from COVID-19 have been reported? Is the number of deaths rising or falling? How does the death rate compare to other countries?
+3. Vaccinations: How many vaccine doses are being administered each day? How many doses have been administered in total? What share of the population has been vaccinated?
+4. Death rates per million population ( for a specific period – peak pandemic and off-peak time)
+5. GDP
+
+
+## Audience 
+
+1. Hospital Personnel
+2. Government 
+3. Families

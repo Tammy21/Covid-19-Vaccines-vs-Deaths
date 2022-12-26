@@ -1,0 +1,36 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Data Visualization Project"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Introduction
+      - href: understanding.qmd
+        text: Understanding the data
+      - href: eda.qmd
+        text: EDA
+      - href: main_analysis.qmd
+        text: Main Analysis
+  sidebar: 
+    style: "docked"
+    search: true
+    contents: 
+      - section: "Main Menu"
+        contents: 
+        - index.qmd
+        - understanding.qmd
+        - eda.qmd
+        - main_analysis.qmd
+
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+

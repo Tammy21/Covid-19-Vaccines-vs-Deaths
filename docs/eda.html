@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Visualization Project - Exploratory Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+        <script type="text/javascript">
+        window.PlotlyConfig = {MathJaxConfig: 'local'};
+        if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+        if (typeof require !== 'undefined') {
+        require.undef("plotly");
+        requirejs.config({
+            paths: {
+                'plotly': ['https://cdn.plot.ly/plotly-2.16.1.min']
+            }
+        });
+        require(['plotly'], function(Plotly) {
+            window._Plotly = Plotly;
+        });
+        }
+        </script>
+        
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Data Visualization Project</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">Introduction</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./understanding.html">Understanding the data</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./eda.html">EDA</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./main_analysis.html">Main Analysis</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Exploratory Data Analysis</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Main Menu</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Impact of Covid-19 Vaccines on Death-rates</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./understanding.html" class="sidebar-item-text sidebar-link">Understanding The Datasets</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./eda.html" class="sidebar-item-text sidebar-link active">Exploratory Data Analysis</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./main_analysis.html" class="sidebar-item-text sidebar-link">Main Analysis</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link active" data-scroll-target="#analysis-plan"><span class="toc-section-number">1</span>  Analysis Plan</a></li>
+  <li><a href="#sample-data" id="toc-sample-data" class="nav-link" data-scroll-target="#sample-data"><span class="toc-section-number">2</span>  Sample Data</a></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning"><span class="toc-section-number">3</span>  Data Cleaning</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Exploratory Data Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pandas <span class="im">import</span> Series, DataFrame</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> rcParams</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objs <span class="im">as</span> go</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>plt.rc(<span class="st">'font'</span>, size<span class="op">=</span><span class="dv">10</span>)  </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="analysis-plan" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="analysis-plan"><span class="header-section-number">1</span> Analysis Plan</h2>
+<p>Firstly we perform data retrieval (identifying data sources, defining important variables and relevant key performance indicators). Secondly, we will perform data processing which includes data transformation, data translation, checking consistency of data, data pre-processing, checking outliers and handling of missing values. Thirdly, we will perform Exploratory Data Analysis, make statistical summaries, and then data visualization of graphs. Then we will perform a hypothesis testing of vaccination vs total deaths.</p>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vaccine_df <span class="op">=</span> pd.read_csv(<span class="st">"dataset/country_vaccinations.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>vaccine_df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>country</th>
+      <th>iso_code</th>
+      <th>date</th>
+      <th>total_vaccinations</th>
+      <th>people_vaccinated</th>
+      <th>people_fully_vaccinated</th>
+      <th>daily_vaccinations_raw</th>
+      <th>daily_vaccinations</th>
+      <th>total_vaccinations_per_hundred</th>
+      <th>people_vaccinated_per_hundred</th>
+      <th>people_fully_vaccinated_per_hundred</th>
+      <th>daily_vaccinations_per_million</th>
+      <th>vaccines</th>
+      <th>source_name</th>
+      <th>source_website</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>2021-02-22</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Johnson&amp;Johnson, Oxford/AstraZeneca, Pfizer/Bi...</td>
+      <td>World Health Organization</td>
+      <td>https://covid19.who.int/</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>2021-02-23</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1367.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>34.0</td>
+      <td>Johnson&amp;Johnson, Oxford/AstraZeneca, Pfizer/Bi...</td>
+      <td>World Health Organization</td>
+      <td>https://covid19.who.int/</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>2021-02-24</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1367.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>34.0</td>
+      <td>Johnson&amp;Johnson, Oxford/AstraZeneca, Pfizer/Bi...</td>
+      <td>World Health Organization</td>
+      <td>https://covid19.who.int/</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>2021-02-25</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1367.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>34.0</td>
+      <td>Johnson&amp;Johnson, Oxford/AstraZeneca, Pfizer/Bi...</td>
+      <td>World Health Organization</td>
+      <td>https://covid19.who.int/</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>2021-02-26</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1367.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>34.0</td>
+      <td>Johnson&amp;Johnson, Oxford/AstraZeneca, Pfizer/Bi...</td>
+      <td>World Health Organization</td>
+      <td>https://covid19.who.int/</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-data" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sample-data"><span class="header-section-number">2</span> Sample Data</h2>
+<p>We look at a sample to inspect the data. This steps gives us an early insight into the data that will be used in order to carry out the analysis.</p>
+<p>Feature selection is one the vital task to perform data analysis and exploration There are various statistical methods included in feature selection. In this project our motive is to focus on the vsccinstion rates and the total death. Hence, we select features which are closely related to this component. The OWID dataset has 65 variables. All the variables are not required for our analysis. We select only few variables here.</p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>summary_df <span class="op">=</span> pd.read_csv(<span class="st">"dataset/worldometer_coronavirus_summary_data.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>summary_df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="3">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>country</th>
+      <th>continent</th>
+      <th>total_confirmed</th>
+      <th>total_deaths</th>
+      <th>total_recovered</th>
+      <th>active_cases</th>
+      <th>serious_or_critical</th>
+      <th>total_cases_per_1m_population</th>
+      <th>total_deaths_per_1m_population</th>
+      <th>total_tests</th>
+      <th>total_tests_per_1m_population</th>
+      <th>population</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>179267</td>
+      <td>7690.0</td>
+      <td>162202.0</td>
+      <td>9375.0</td>
+      <td>1124.0</td>
+      <td>4420</td>
+      <td>190.0</td>
+      <td>951337.0</td>
+      <td>23455.0</td>
+      <td>40560636</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Albania</td>
+      <td>Europe</td>
+      <td>275574</td>
+      <td>3497.0</td>
+      <td>271826.0</td>
+      <td>251.0</td>
+      <td>2.0</td>
+      <td>95954</td>
+      <td>1218.0</td>
+      <td>1817530.0</td>
+      <td>632857.0</td>
+      <td>2871945</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Algeria</td>
+      <td>Africa</td>
+      <td>265816</td>
+      <td>6875.0</td>
+      <td>178371.0</td>
+      <td>80570.0</td>
+      <td>6.0</td>
+      <td>5865</td>
+      <td>152.0</td>
+      <td>230861.0</td>
+      <td>5093.0</td>
+      <td>45325517</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Andorra</td>
+      <td>Europe</td>
+      <td>42156</td>
+      <td>153.0</td>
+      <td>41021.0</td>
+      <td>982.0</td>
+      <td>14.0</td>
+      <td>543983</td>
+      <td>1974.0</td>
+      <td>249838.0</td>
+      <td>3223924.0</td>
+      <td>77495</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Angola</td>
+      <td>Africa</td>
+      <td>99194</td>
+      <td>1900.0</td>
+      <td>97149.0</td>
+      <td>145.0</td>
+      <td>NaN</td>
+      <td>2853</td>
+      <td>55.0</td>
+      <td>1499795.0</td>
+      <td>43136.0</td>
+      <td>34769277</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>daily_df <span class="op">=</span> pd.read_csv(<span class="st">"dataset/worldometer_coronavirus_daily_data.csv"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>daily_df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="4">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>date</th>
+      <th>country</th>
+      <th>cumulative_total_cases</th>
+      <th>daily_new_cases</th>
+      <th>active_cases</th>
+      <th>cumulative_total_deaths</th>
+      <th>daily_new_deaths</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2020-2-15</td>
+      <td>Afghanistan</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020-2-16</td>
+      <td>Afghanistan</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2020-2-17</td>
+      <td>Afghanistan</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020-2-18</td>
+      <td>Afghanistan</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2020-2-19</td>
+      <td>Afghanistan</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Since vaccine_df is updated on a daily basis and an aggregation of all the dates (one single value for each country) is needed for better visualization.</p>
+<p>Applying aggregation function on total_vaccination column in Vaccine_df. Then, The max value of total_vaccinations of each country is selected (since data is cumulative,it is fine to consider max value)</p>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> aggregate(df: pd.Series, agg_col: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> df.groupby(<span class="st">"country"</span>)[agg_col].<span class="bu">max</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([x <span class="cf">for</span> x <span class="kw">in</span> vaccine_df.country.unique() <span class="cf">if</span> x <span class="kw">not</span> <span class="kw">in</span> summary_df.country.unique()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>['Antigua and Barbuda', 'Bonaire Sint Eustatius and Saba', 'Bosnia and Herzegovina', 'Brunei', 'Cape Verde', "Cote d'Ivoire", 'Czechia', 'Democratic Republic of Congo', 'England', 'Eswatini', 'Falkland Islands', 'Guernsey', 'Guinea-Bissau', 'Hong Kong', 'Isle of Man', 'Jersey', 'Kosovo', 'Macao', 'North Macedonia', 'Northern Cyprus', 'Northern Ireland', 'Palestine', 'Pitcairn', 'Saint Kitts and Nevis', 'Saint Vincent and the Grenadines', 'Sao Tome and Principe', 'Scotland', 'Sint Maarten (Dutch part)', 'Timor', 'Tokelau', 'Trinidad and Tobago', 'Turkmenistan', 'Turks and Caicos Islands', 'Tuvalu', 'United Kingdom', 'United States', 'Vietnam', 'Wales', 'Wallis and Futuna']</code></pre>
+</div>
+</div>
+</section>
+<section id="data-cleaning" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="data-cleaning"><span class="header-section-number">3</span> Data Cleaning</h2>
+<p>It is important to clean the data before performing visualization as it helps in improving the accuracy of plots and also results in uniformity of the data.</p>
+<p>Firstly, compare if there are any countries that exist in vaccine_df (Aggregated Vaccination Dataset) but miss in summary_df (Daily COVID-19 Cases Summary Dataset).</p>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([x <span class="cf">for</span> x <span class="kw">in</span> vaccine_df.country.unique() <span class="cf">if</span> x <span class="kw">not</span> <span class="kw">in</span> summary_df.country.unique()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>['Antigua and Barbuda', 'Bonaire Sint Eustatius and Saba', 'Bosnia and Herzegovina', 'Brunei', 'Cape Verde', "Cote d'Ivoire", 'Czechia', 'Democratic Republic of Congo', 'England', 'Eswatini', 'Falkland Islands', 'Guernsey', 'Guinea-Bissau', 'Hong Kong', 'Isle of Man', 'Jersey', 'Kosovo', 'Macao', 'North Macedonia', 'Northern Cyprus', 'Northern Ireland', 'Palestine', 'Pitcairn', 'Saint Kitts and Nevis', 'Saint Vincent and the Grenadines', 'Sao Tome and Principe', 'Scotland', 'Sint Maarten (Dutch part)', 'Timor', 'Tokelau', 'Trinidad and Tobago', 'Turkmenistan', 'Turks and Caicos Islands', 'Tuvalu', 'United Kingdom', 'United States', 'Vietnam', 'Wales', 'Wallis and Futuna']</code></pre>
+</div>
+</div>
+<p>It is surprising to see that countries like the United States and the United Kingdom are missing in the Summary dataset, but upon observation, it was found that the Summary dataset consisted of abbreviations ‘USA’ and ‘UK’ instead of full names. Similarly few names were differently spelled. The following code snippet removes inconsistency in the dataset.</p>
+<p>vaccine_df.country = vaccine_df.country.replace().replace({ “Czechia”: “Czech Republic”, “United States”: “USA”, “United Kingdom”: “UK”, “Isle of Man”: “Isle Of Man”, “Republic of Ireland”: “Ireland”, “Northern Cyprus” : “Cyprus” })</p>
+<p>print(These 4 countries are a part of UK) vaccine_df = vaccine_df[vaccine_df.country.apply(lambda x: x not in [‘England’, ‘Scotland’, ‘Wales’, ‘Northern Ireland’])]</p>
+<pre><code>
+
+
+# Main Variables
+Key Metrics 
+
+Deaths: How many deaths from COVID-19 have been reported? Is the number of deaths rising or falling? How does the death rate compare to other countries?
+
+Vaccinations: How many vaccine doses are being administered each day? How many doses have been administered in total? What share of the population has been vaccinated?
+
+
+## Total Vaccinations per country grouped by Vaccines
+
+::: {.cell execution_count=7}
+``` {.python .cell-code}
+fig = px.treemap(vaccine_df,names = 'country',values = 'total_vaccinations',
+                 path = ['vaccines','country'],
+                 title="Total Vaccinations per country grouped by Vaccines",
+                 color_discrete_sequence =px.colors.qualitative.Set1)
+fig.show()</code></pre>
+<div class="cell-output cell-output-display">
+
+<div>                            <div id="25a57d38-3fb7-4aaa-94ca-bfa9aaaad8f5" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("25a57d38-3fb7-4aaa-94ca-bfa9aaaad8f5")) {                    Plotly.newPlot(                        "25a57d38-3fb7-4aaa-94ca-bfa9aaaad8f5",                        [{"branchvalues":"total","domain":{"x":[0.0,1.0],"y":[0.0,1.0]},"hovertemplate":"labels=%{label}<br>total_vaccinations=%{value}<br>parent=%{parent}<br>id=%{id}<extra></extra>","ids":["Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Afghanistan","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V/Albania","Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V/Algeria","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Andorra","Oxford/AstraZeneca/Angola","Oxford/AstraZeneca, Pfizer/BioNTech/Anguilla","Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V/Antigua and Barbuda","CanSino, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Argentina","Moderna, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V/Armenia","Pfizer/BioNTech/Aruba","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Australia","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech/Austria","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V/Azerbaijan","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech/Bahamas","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik Light, Sputnik V/Bahrain","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/Bangladesh","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Barbados","Sinopharm/Beijing, Sputnik V/Belarus","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Belgium","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Belize","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Benin","Oxford/AstraZeneca, Pfizer/BioNTech/Bermuda","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Bhutan","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Bolivia","Moderna, Pfizer/BioNTech/Bonaire Sint Eustatius and Saba","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V/Bosnia and Herzegovina","Covaxin, Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Botswana","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Brazil","Johnson&Johnson, Oxford/AstraZeneca/British Virgin Islands","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Brunei","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Bulgaria","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing/Burkina Faso","Sinopharm/Beijing/Burundi","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac/Cambodia","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Cameroon","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Canada","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Cape Verde","Oxford/AstraZeneca, Pfizer/BioNTech/Cayman Islands","Covaxin, Oxford/AstraZeneca/Central African Republic","Sinopharm/Beijing/Chad","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Chile","CanSino, Sinopharm/Beijing, Sinopharm/Wuhan, Sinovac, ZF2001/China","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Colombia","Covaxin, Oxford/AstraZeneca, Sinopharm/Beijing/Comoros","Moderna, Oxford/AstraZeneca, Sinopharm/Beijing, Sputnik V/Congo","Pfizer/BioNTech/Cook Islands","Oxford/AstraZeneca, Pfizer/BioNTech/Costa Rica","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Cote d'Ivoire","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Croatia","Abdala, Soberana Plus, Soberana02/Cuba","Moderna, Pfizer/BioNTech/Curacao","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Cyprus","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech/Czechia","Oxford/AstraZeneca/Democratic Republic of Congo","Johnson&Johnson, Moderna, Pfizer/BioNTech/Denmark","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/Djibouti","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Dominica","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/Dominican Republic","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Ecuador","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/Egypt","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/El Salvador","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/England","Sinopharm/Beijing/Equatorial Guinea","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Estonia","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech/Eswatini","Covaxin, Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac/Ethiopia","Moderna, Pfizer/BioNTech/Faeroe Islands","Oxford/AstraZeneca/Falkland Islands","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Fiji","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Finland","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/France","Johnson&Johnson, Pfizer/BioNTech/French Polynesia","Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Gabon","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing/Gambia","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/Georgia","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech/Germany","Oxford/AstraZeneca, Sputnik V/Ghana","Oxford/AstraZeneca, Pfizer/BioNTech/Gibraltar","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Greece","Moderna/Greenland","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech/Grenada","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V/Guatemala","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Guernsey","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/Guinea","Oxford/AstraZeneca, Sinopharm/Beijing/Guinea-Bissau","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Guyana","Johnson&Johnson, Moderna/Haiti","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V/Honduras","Pfizer/BioNTech, Sinovac/Hong Kong","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Hungary","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Iceland","Covaxin, Oxford/AstraZeneca, Sputnik V/India","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/Indonesia","COVIran Barekat, Covaxin, FAKHRAVAC, Oxford/AstraZeneca, Razi Cov Pars, Sinopharm/Beijing, Soberana02, SpikoGen, Sputnik V/Iran","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Iraq","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Ireland","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Isle of Man","Moderna, Pfizer/BioNTech/Israel","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech/Italy","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Jamaica","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Japan","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Jersey","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Jordan","QazVac, Sinopharm/Beijing, Sputnik V/Kazakhstan","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Kenya","Oxford/AstraZeneca/Kiribati","Oxford/AstraZeneca, Pfizer/BioNTech/Kosovo","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Kuwait","Sinopharm/Beijing, Sputnik V/Kyrgyzstan","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V/Laos","Johnson&Johnson, Moderna, Novavax, Pfizer/BioNTech/Latvia","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Lebanon","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing/Lesotho","Oxford/AstraZeneca/Liberia","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/Libya","Johnson&Johnson, Moderna, Pfizer/BioNTech/Liechtenstein","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech/Lithuania","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Luxembourg","Pfizer/BioNTech, Sinopharm/Beijing/Macao","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing/Madagascar","Johnson&Johnson, Oxford/AstraZeneca/Malawi","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/Malaysia","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Maldives","Oxford/AstraZeneca/Mali","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Malta","Oxford/AstraZeneca, Sinopharm/Beijing/Mauritania","Covaxin, Oxford/AstraZeneca, Sinopharm/Beijing/Mauritius","CanSino, Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V/Mexico","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Moldova","Pfizer/BioNTech/Monaco","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Mongolia","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Montenegro","Oxford/AstraZeneca/Montserrat","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Morocco","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing/Mozambique","Oxford/AstraZeneca, Sinopharm/Beijing/Myanmar","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Namibia","Oxford/AstraZeneca/Nauru","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Nepal","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech/Netherlands","Pfizer/BioNTech/New Caledonia","Oxford/AstraZeneca, Pfizer/BioNTech/New Zealand","Abdala, Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Soberana02, Sputnik Light, Sputnik V/Nicaragua","Oxford/AstraZeneca, Sinopharm/Beijing/Niger","Oxford/AstraZeneca/Nigeria","Pfizer/BioNTech/Niue","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/North Macedonia","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Northern Cyprus","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Northern Ireland","Moderna, Pfizer/BioNTech/Norway","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V/Oman","CanSino, Covaxin, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/Pakistan","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V/Palestine","Oxford/AstraZeneca, Pfizer/BioNTech/Panama","Oxford/AstraZeneca/Papua New Guinea","Covaxin, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/Paraguay","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Peru","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V/Philippines","Oxford/AstraZeneca/Pitcairn","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Poland","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Portugal","Moderna, Pfizer/BioNTech/Qatar","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Romania","EpiVacCorona, Sputnik V/Russia","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/Rwanda","Oxford/AstraZeneca/Saint Helena","Oxford/AstraZeneca, Pfizer/BioNTech/Saint Kitts and Nevis","Oxford/AstraZeneca, Pfizer/BioNTech/Saint Lucia","Oxford/AstraZeneca/Saint Vincent and the Grenadines","Oxford/AstraZeneca/Samoa","Pfizer/BioNTech, Sputnik V/San Marino","Oxford/AstraZeneca/Sao Tome and Principe","Oxford/AstraZeneca, Pfizer/BioNTech/Saudi Arabia","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Scotland","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing/Senegal","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Serbia","Oxford/AstraZeneca, Sinopharm/Beijing, Sputnik V/Seychelles","Oxford/AstraZeneca, Sinopharm/Beijing/Sierra Leone","Moderna, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/Singapore","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Sint Maarten (Dutch part)","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V/Slovakia","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech/Slovenia","Oxford/AstraZeneca/Solomon Islands","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac/Somalia","Johnson&Johnson, Pfizer/BioNTech/South Africa","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech/South Korea","Johnson&Johnson, Oxford/AstraZeneca/South Sudan","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Spain","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Sri Lanka","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/Sudan","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Suriname","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Sweden","Johnson&Johnson, Moderna, Pfizer/BioNTech/Switzerland","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V/Syria","Medigen, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Taiwan","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V/Tajikistan","Johnson&Johnson, Pfizer/BioNTech, Sinopharm/Beijing/Tanzania","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac/Thailand","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Timor","Oxford/AstraZeneca/Togo","Pfizer/BioNTech/Tokelau","Oxford/AstraZeneca/Tonga","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing/Trinidad and Tobago","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V/Tunisia","Pfizer/BioNTech, Sinovac, Turkovac/Turkey","EpiVacCorona, Oxford/AstraZeneca, QazVac, Sinopharm/Beijing, Sputnik V, ZF2001/Turkmenistan","Pfizer/BioNTech/Turks and Caicos Islands","Oxford/AstraZeneca/Tuvalu","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Uganda","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Ukraine","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinopharm/Wuhan, Sputnik V/United Arab Emirates","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/United Kingdom","Johnson&Johnson, Moderna, Pfizer/BioNTech/United States","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac/Uruguay","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik Light, Sputnik V, ZF2001/Uzbekistan","Oxford/AstraZeneca/Vanuatu","Abdala, Sinopharm/Beijing, Sinovac, Soberana02, Sputnik Light, Sputnik V/Venezuela","Abdala, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V/Vietnam","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech/Wales","Moderna/Wallis and Futuna","Johnson&Johnson, Oxford/AstraZeneca, Sinovac/Yemen","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing/Zambia","Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V/Zimbabwe","Abdala, Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Soberana02, Sputnik Light, Sputnik V","Abdala, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Abdala, Sinopharm/Beijing, Sinovac, Soberana02, Sputnik Light, Sputnik V","Abdala, Soberana Plus, Soberana02","COVIran Barekat, Covaxin, FAKHRAVAC, Oxford/AstraZeneca, Razi Cov Pars, Sinopharm/Beijing, Soberana02, SpikoGen, Sputnik V","CanSino, Covaxin, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","CanSino, Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","CanSino, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","CanSino, Sinopharm/Beijing, Sinopharm/Wuhan, Sinovac, ZF2001","Covaxin, Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Covaxin, Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac","Covaxin, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Covaxin, Oxford/AstraZeneca","Covaxin, Oxford/AstraZeneca, Sinopharm/Beijing","Covaxin, Oxford/AstraZeneca, Sputnik V","EpiVacCorona, Oxford/AstraZeneca, QazVac, Sinopharm/Beijing, Sputnik V, ZF2001","EpiVacCorona, Sputnik V","Johnson&Johnson, Moderna","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Johnson&Johnson, Moderna, Novavax, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik Light, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Johnson&Johnson, Moderna, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Sinovac","Johnson&Johnson, Pfizer/BioNTech","Johnson&Johnson, Pfizer/BioNTech, Sinopharm/Beijing","Medigen, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik Light, Sputnik V, ZF2001","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Moderna, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V","Moderna, Oxford/AstraZeneca, Sinopharm/Beijing, Sputnik V","Moderna, Pfizer/BioNTech","Moderna, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Oxford/AstraZeneca","Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinopharm/Wuhan, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing","Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing, Sputnik V","Oxford/AstraZeneca, Sputnik V","Pfizer/BioNTech","Pfizer/BioNTech, Sinopharm/Beijing","Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Pfizer/BioNTech, Sinovac","Pfizer/BioNTech, Sinovac, Turkovac","Pfizer/BioNTech, Sputnik V","QazVac, Sinopharm/Beijing, Sputnik V","Sinopharm/Beijing","Sinopharm/Beijing, Sputnik V"],"labels":["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bonaire Sint Eustatius and Saba","Bosnia and Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Cook Islands","Costa Rica","Cote d'Ivoire","Croatia","Cuba","Curacao","Cyprus","Czechia","Democratic Republic of Congo","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","England","Equatorial Guinea","Estonia","Eswatini","Ethiopia","Faeroe Islands","Falkland Islands","Fiji","Finland","France","French Polynesia","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guatemala","Guernsey","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macao","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Niue","North Macedonia","Northern Cyprus","Northern Ireland","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Pitcairn","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Helena","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Scotland","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Sint Maarten (Dutch part)","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor","Togo","Tokelau","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Venezuela","Vietnam","Wales","Wallis and Futuna","Yemen","Zambia","Zimbabwe","Abdala, Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Soberana02, Sputnik Light, Sputnik V","Abdala, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Abdala, Sinopharm/Beijing, Sinovac, Soberana02, Sputnik Light, Sputnik V","Abdala, Soberana Plus, Soberana02","COVIran Barekat, Covaxin, FAKHRAVAC, Oxford/AstraZeneca, Razi Cov Pars, Sinopharm/Beijing, Soberana02, SpikoGen, Sputnik V","CanSino, Covaxin, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","CanSino, Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","CanSino, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","CanSino, Sinopharm/Beijing, Sinopharm/Wuhan, Sinovac, ZF2001","Covaxin, Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Covaxin, Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac","Covaxin, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Covaxin, Oxford/AstraZeneca","Covaxin, Oxford/AstraZeneca, Sinopharm/Beijing","Covaxin, Oxford/AstraZeneca, Sputnik V","EpiVacCorona, Oxford/AstraZeneca, QazVac, Sinopharm/Beijing, Sputnik V, ZF2001","EpiVacCorona, Sputnik V","Johnson&Johnson, Moderna","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Johnson&Johnson, Moderna, Novavax, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik Light, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Johnson&Johnson, Moderna, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Sinovac","Johnson&Johnson, Pfizer/BioNTech","Johnson&Johnson, Pfizer/BioNTech, Sinopharm/Beijing","Medigen, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik Light, Sputnik V, ZF2001","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Moderna, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V","Moderna, Oxford/AstraZeneca, Sinopharm/Beijing, Sputnik V","Moderna, Pfizer/BioNTech","Moderna, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Oxford/AstraZeneca","Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinopharm/Wuhan, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing","Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing, Sputnik V","Oxford/AstraZeneca, Sputnik V","Pfizer/BioNTech","Pfizer/BioNTech, Sinopharm/Beijing","Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Pfizer/BioNTech, Sinovac","Pfizer/BioNTech, Sinovac, Turkovac","Pfizer/BioNTech, Sputnik V","QazVac, Sinopharm/Beijing, Sputnik V","Sinopharm/Beijing","Sinopharm/Beijing, Sputnik V"],"name":"","parents":["Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca","Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","CanSino, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Moderna, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V","Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik Light, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Moderna, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Covaxin, Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Johnson&Johnson, Oxford/AstraZeneca","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Oxford/AstraZeneca, Pfizer/BioNTech","Covaxin, Oxford/AstraZeneca","Sinopharm/Beijing","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","CanSino, Sinopharm/Beijing, Sinopharm/Wuhan, Sinovac, ZF2001","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Covaxin, Oxford/AstraZeneca, Sinopharm/Beijing","Moderna, Oxford/AstraZeneca, Sinopharm/Beijing, Sputnik V","Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Abdala, Soberana Plus, Soberana02","Moderna, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca","Johnson&Johnson, Moderna, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Sinopharm/Beijing","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech","Covaxin, Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac","Moderna, Pfizer/BioNTech","Oxford/AstraZeneca","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Pfizer/BioNTech","Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Moderna","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Pfizer/BioNTech, Sinovac","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Covaxin, Oxford/AstraZeneca, Sputnik V","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","COVIran Barekat, Covaxin, FAKHRAVAC, Oxford/AstraZeneca, Razi Cov Pars, Sinopharm/Beijing, Soberana02, SpikoGen, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Pfizer/BioNTech","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","QazVac, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Oxford/AstraZeneca","Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Johnson&Johnson, Moderna, Novavax, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Oxford/AstraZeneca","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Johnson&Johnson, Moderna, Pfizer/BioNTech","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca","CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Oxford/AstraZeneca","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca, Sinopharm/Beijing","Covaxin, Oxford/AstraZeneca, Sinopharm/Beijing","CanSino, Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Oxford/AstraZeneca","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Oxford/AstraZeneca, Sinopharm/Beijing","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Oxford/AstraZeneca","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech","Abdala, Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Soberana02, Sputnik Light, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing","Oxford/AstraZeneca","Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","CanSino, Covaxin, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca","Covaxin, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Oxford/AstraZeneca","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Pfizer/BioNTech","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","EpiVacCorona, Sputnik V","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Oxford/AstraZeneca","Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca","Oxford/AstraZeneca","Pfizer/BioNTech, Sputnik V","Oxford/AstraZeneca","Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing, Sputnik V","Oxford/AstraZeneca, Sinopharm/Beijing","Moderna, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech, Sputnik V","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Oxford/AstraZeneca","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac","Johnson&Johnson, Pfizer/BioNTech","Johnson&Johnson, Moderna, Novavax, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Pfizer/BioNTech","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik Light, Sputnik V","Medigen, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik V","Johnson&Johnson, Pfizer/BioNTech, Sinopharm/Beijing","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Oxford/AstraZeneca","Pfizer/BioNTech","Oxford/AstraZeneca","Johnson&Johnson, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinovac, Sputnik V","Pfizer/BioNTech, Sinovac, Turkovac","EpiVacCorona, Oxford/AstraZeneca, QazVac, Sinopharm/Beijing, Sputnik V, ZF2001","Pfizer/BioNTech","Oxford/AstraZeneca","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Johnson&Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sinopharm/Wuhan, Sputnik V","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Johnson&Johnson, Moderna, Pfizer/BioNTech","Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputnik Light, Sputnik V, ZF2001","Oxford/AstraZeneca","Abdala, Sinopharm/Beijing, Sinovac, Soberana02, Sputnik Light, Sputnik V","Abdala, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech, Sinopharm/Beijing, Sputnik V","Moderna, Oxford/AstraZeneca, Pfizer/BioNTech","Moderna","Johnson&Johnson, Oxford/AstraZeneca, Sinovac","Johnson&Johnson, Oxford/AstraZeneca, Sinopharm/Beijing","Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Sputnik V","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"values":[118041426.0,295540465.0,238946062.0,2447643.0,388740243.0,806657.0,6840405.0,18678951288.0,34983105.0,38528732.0,9733094247.0,596758436.0,2364582887.0,8527171.0,778833949.0,13205078414.0,76587881.0,198340415.0,5762415299.0,21555588.0,24937864.0,4511282.0,77837458.0,2228459475.0,43236.0,13550064.0,25047730.0,79067174395.0,1109320.0,61927129.0,922195972.0,18752087.0,129486.0,6972078336.0,25256245.0,18228269647.0,17810279.0,8639957.0,10566686.0,7169222.0,11769621615.0,709452663700.0,10384422784.0,10226002.0,11103412.0,457151.0,265394163.0,325419927.0,1138056630.0,6405165573.0,51902234.0,165253700.0,4168648944.0,11499024.0,3032077468.0,1825263.0,3454276.0,3559094012.0,6187581735.0,1780807471.0,862583748.0,31037114023.0,23507999.0,487453125.0,14411103.0,1645964643.0,8612023.0,14163.0,41785670.0,870145578.0,32177039372.0,10745478.0,6915494.0,6484672.0,374537207.0,38982830332.0,95856469.0,17848912.0,4449067007.0,6166081.0,3055000.0,1954565774.0,9211190.0,251098019.0,13232962.0,58297983.0,4984467.0,247616846.0,2676384608.0,776460890.0,51942584.0,323440305798.0,45214622016.0,10694796486.0,500007948.0,2468578495.0,28099653.0,5743375433.0,29713054032.0,185315300.0,30302126928.0,13560674.0,1184104194.0,3585428930.0,1550029163.0,1017407.0,312915688.0,198964320.0,446783893.0,304325044.0,623488904.0,979310269.0,6163451.0,6636702.0,203838898.0,16368068.0,1114103234.0,263977751.0,150758003.0,13409440.0,266138742.0,13297513692.0,185031910.0,29264946.0,297379346.0,69654195.0,47037337.0,28515470375.0,314178746.0,867304.0,1091192283.0,139401891.0,95908.0,4852617579.0,411953045.0,1063018789.0,27031086.0,119130.0,2460335069.0,1116703932.0,11619229.0,1834291254.0,178434850.0,20285215.0,733673302.0,11055.0,128128280.0,6088758.0,953157405.0,2560999408.0,139430382.0,15677886338.0,193711195.0,251726034.0,9997902.0,423464599.0,10520125027.0,8736435778.0,348.0,11131817028.0,3794914767.0,1358902402.0,4238875187.0,28384562707.0,204740103.0,24233.0,2999002.0,12874687.0,4348566.0,5115019.0,3863380.0,2690169.0,11456838033.0,2995364072.0,62562518.0,1093215957.0,8319724.0,16243279.0,3164195328.0,2096270.0,254729712.0,736766851.0,4853407.0,32208616.0,4133433811.0,21831406035.0,6021857.0,13863240572.0,6644313808.0,46008871.0,69986069.0,741237578.0,3695330150.0,38980975.0,5591280901.0,171225805.0,26064182.0,20018354320.0,31418464.0,40463126.0,3857.0,1974092.0,316754503.0,2041177133.0,33923100933.0,15213698.0,1016487.0,51528.0,226304447.0,4357666978.0,5469038086.0,36851641768.0,155013867208.0,1979930902.0,2796712521.0,2225477.0,422856844.0,17914499152.0,1810193186.0,365717.0,10546907.0,202357387.0,1589014934.0,178434850.0,17914499152.0,422856844.0,6405165573.0,10694796486.0,15677886338.0,28515470375.0,18678951288.0,13297513692.0,17957203350.0,709452663700.0,25047730.0,1645964643.0,423464599.0,10566686.0,57263339.0,323440305798.0,15213698.0,28384562707.0,4984467.0,98260271796.0,45214622016.0,254729712.0,623488904.0,99625791782.0,4271255681.0,13205078414.0,8930146973.0,2245917236.0,778833949.0,1960565084.0,14968394209.0,247616846.0,161757642894.0,273269919.0,25993274.0,508638848.0,46008871.0,304325044.0,2033730753.0,7720675727.0,79092112259.0,721682600.0,7004286952.0,38980975.0,10546907.0,4144179289.0,26064182.0,5591280901.0,6531798.0,115391275885.0,95647737.0,20018354320.0,6702611791.0,2796712521.0,171225805.0,1954565774.0,34983105.0,11103412.0,9723834736.0,3164195328.0,1242804692.0,14168845669.0,10855185163.0,5469038086.0,4796214967.0,331967178.0,3803128348.0,2017438124.0,2813103798.0,6840405.0,1182434440.0,1827960996.0,8319724.0,95856469.0,52503815.0,150758003.0,6915494.0,2676384608.0,33923100933.0,3863380.0,3585428930.0,30806707.0,645124308.0],"type":"treemap"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"legend":{"tracegroupgap":0},"title":{"text":"Total Vaccinations per country grouped by Vaccines"},"treemapcolorway":["rgb(228,26,28)","rgb(55,126,184)","rgb(77,175,74)","rgb(152,78,163)","rgb(255,127,0)","rgb(255,255,51)","rgb(166,86,40)","rgb(247,129,191)","rgb(153,153,153)"]},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('25a57d38-3fb7-4aaa-94ca-bfa9aaaad8f5');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+<p>:::</p>
+<p>According to the above treemap, The top 5 Countries with vaccination rates are China, India, USA, Brazil and .</p>
+<p>The progess of Covod-19 vaccines have been neven with stark disparities among countries of different income levels.According to Our World in data publication 80% of people in high-income countries had received at least one vaccine dose compared to only 23% of those in low-income countries. <img src="images/48d69d60-9053-4184-9c50-b8819b180508.png" class="img-fluid" alt="image.png"></p>
+<p>Our World in Data also publishes data on COVID-19 fatality rates, in which low-income countries also experience worse outcomes. As of Nov.&nbsp;6, the cumulative case fatality rate was 2.12% in low-income countries, compared to 0.69% in high-income countries.</p>
+<div class="cell" data-execution_count="8">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_trend(dataframe,feature,title,country):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    plt.style.use(<span class="st">'ggplot'</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>,<span class="dv">25</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i,country <span class="kw">in</span> <span class="bu">enumerate</span>(country):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        plt.subplot(<span class="dv">8</span>,<span class="dv">4</span>,i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        data <span class="op">=</span> dataframe[dataframe[<span class="st">'country'</span>] <span class="op">==</span> country]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        sns.lineplot(x<span class="op">=</span>data[<span class="st">'date'</span>] ,y<span class="op">=</span>data[feature],label <span class="op">=</span> feature)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">''</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        plt.tick_params(axis<span class="op">=</span><span class="st">'x'</span>,which<span class="op">=</span><span class="st">'both'</span>,top<span class="op">=</span><span class="va">False</span>,bottom<span class="op">=</span><span class="va">False</span>,labelbottom<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        plt.title(country)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    plt.suptitle(title,y<span class="op">=</span><span class="fl">1.05</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>country <span class="op">=</span> [<span class="st">'Argentina'</span>, <span class="st">'Austria'</span>, <span class="st">'Belgium'</span>, <span class="st">'Brazil'</span>,<span class="st">'Canada'</span>,<span class="st">'China'</span>,<span class="st">'Czechia'</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>           <span class="st">'Denmark'</span>, <span class="st">'England'</span>,<span class="st">'Finland'</span>, <span class="st">'France'</span>,<span class="st">'Germany'</span>,<span class="st">'India'</span>,<span class="st">'Ireland'</span>, </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>           <span class="st">'Israel'</span>, <span class="st">'Italy'</span>, <span class="st">'Kuwait'</span>,<span class="st">'Mexico'</span>, <span class="st">'Netherlands'</span>,<span class="st">'Norway'</span>, <span class="st">'Poland'</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>           <span class="st">'Russia'</span>,<span class="st">'Saudi Arabia'</span>, <span class="st">'Scotland'</span>,<span class="st">'Singapore'</span>,<span class="st">'Spain'</span>, <span class="st">'Sweden'</span>,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>           <span class="st">'Switzerland'</span>, <span class="st">'Turkey'</span>,<span class="st">'United Arab Emirates'</span>, <span class="st">'United Kingdom'</span>, <span class="st">'United States'</span>]</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co"># plot_trend(vaccine_df,'total_vaccinations','Trend of total vaccination',country)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-execution_count="9">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot_trend(vaccine_df,'total_vaccinations','Trend of total vaccination',country)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
